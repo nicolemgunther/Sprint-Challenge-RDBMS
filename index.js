@@ -9,6 +9,42 @@ const server = express();
 server.use(express.json());
 server.use(helmet());
 
+// basic gets
+
+server.get('/api/projects', (req, res) => {
+    db('projects')
+        .then(projects => {
+            if (projects.length === 0) {
+                res.status(404).json({ message: 'There are no projects here. Please add one to the database to see the projects array.' });
+            }
+
+            else res.status(200).json(projects);
+        })
+
+        .catch(error => {
+            console.log(error);
+
+            res.status(500).json({ error: "Some useful error message" });
+        });
+});
+
+server.get('/api/actions', (req, res) => {
+    db('actions')
+        .then(actions => {
+            if (actions.length === 0) {
+                res.status(404).json({ message: 'There are no actions here. Please add one to the database to see the actions array.' });
+            }
+
+            else res.status(200).json(actions);
+        })
+
+        .catch(error => {
+            console.log(error);
+
+            res.status(500).json({ error: "Some useful error message" });
+        });
+});
+
 // post projects
 
 server.post('/api/projects', (req, res) => {
