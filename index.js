@@ -42,7 +42,7 @@ server.post('/api/actions', (req, res) => {
     db.insert(actionDetails)
         .into('actions')
 
-        .then(project => {
+        .then(action => {
             res.status(201).json(actionDetails);
         })
 
@@ -56,6 +56,40 @@ server.post('/api/actions', (req, res) => {
 
                 res.status(500).json({ error: "Some useful error message" });
             }
+        });
+});
+
+// get projects/:id
+
+server.get('/api/projects/:id', (req, res) => {
+    const projectId = req.params.id;
+
+    db('projects')
+        .where({ id: projectId })
+
+        .first()
+
+        .then(project => {
+            if (!project) {
+                res.status(404).json({ message: 'No project with that ID exists.' });
+            }
+
+            else {
+                db('actions')
+                    .where({ project_id: projectId })
+
+                    .then(actions => {
+                        project.actions = actions;
+
+                        res.status(200).json(project);
+                    });
+            }
+        })
+
+        .catch(error => {
+            console.log(error);
+
+            res.status(500).json({ error: "Some useful error message" });
         });
 });
 
