@@ -6,7 +6,8 @@
   "author": "Nicole Gunther <nicolemgunther@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "server": "nodemon"
+    "server": "nodemon index.js",
+    "start": "node index.js"
   },
   "dependencies": {
     "express": "^4.16.4",
